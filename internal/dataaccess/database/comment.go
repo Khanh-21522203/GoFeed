@@ -46,27 +46,28 @@ func NewCommentDataAccessor(database *goqu.Database) CommentDataAccessor {
 	}
 }
 
-func (c *commentDataAccessor) CreateComment(ctx context.Context, account_id uint64, post_id uint64, content string, created_at time.Time) (uint64, error) {
+func (c commentDataAccessor) CreateComment(ctx context.Context, account_id uint64, post_id uint64, content string, created_at time.Time) (uint64, error) {
 	return 0, nil
 }
 
-func (c *commentDataAccessor) GetCommentCountOfPost(ctx context.Context, post_id uint64) (int, error) {
+func (c commentDataAccessor) GetCommentCountOfPost(ctx context.Context, post_id uint64) (int, error) {
 	return 0, nil
 }
 
-func (c *commentDataAccessor) GetCommentsOfPost(ctx context.Context, post_id uint64) ([]uint64, error) {
+func (c commentDataAccessor) GetCommentsOfPost(ctx context.Context, post_id uint64) ([]uint64, error) {
 	return nil, nil
 }
 
-func (c *commentDataAccessor) UpdateComment(ctx context.Context, comment Comment) error {
+func (c commentDataAccessor) UpdateComment(ctx context.Context, comment Comment) error {
 	return nil
 }
 
-func (c *commentDataAccessor) DeleteComment(ctx context.Context, id uint64) error {
+func (c commentDataAccessor) DeleteComment(ctx context.Context, id uint64) error {
 	return nil
 }
 
-func (c *commentDataAccessor) WithDatabase(database Database) CommentDataAccessor {
-	c.database = database
-	return c
+func (c commentDataAccessor) WithDatabase(database Database) CommentDataAccessor {
+	return &commentDataAccessor{
+		database: database,
+	}
 }

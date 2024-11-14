@@ -40,31 +40,32 @@ func NewFollowDataAccessor(database *goqu.Database) FollowDataAccessor {
 	}
 }
 
-func (f *followDataAccessor) CreateFollow(ctx context.Context, account_id uint64, following_id uint64) error {
+func (f followDataAccessor) CreateFollow(ctx context.Context, account_id uint64, following_id uint64) error {
 	return nil
 }
 
-func (f *followDataAccessor) GetFollowerCountOfAccount(ctx context.Context, account_id uint64) (int, error) {
+func (f followDataAccessor) GetFollowerCountOfAccount(ctx context.Context, account_id uint64) (int, error) {
 	return 0, nil
 }
 
-func (f *followDataAccessor) GetFollowersOfAccount(ctx context.Context, account_id uint64) ([]uint64, error) {
+func (f followDataAccessor) GetFollowersOfAccount(ctx context.Context, account_id uint64) ([]uint64, error) {
 	return nil, nil
 }
 
-func (f *followDataAccessor) GetFollowingCountOfAccount(ctx context.Context, account_id uint64) (int, error) {
+func (f followDataAccessor) GetFollowingCountOfAccount(ctx context.Context, account_id uint64) (int, error) {
 	return 0, nil
 }
 
-func (f *followDataAccessor) GetFollowingsOfAccount(ctx context.Context, account_id uint64) ([]uint64, error) {
+func (f followDataAccessor) GetFollowingsOfAccount(ctx context.Context, account_id uint64) ([]uint64, error) {
 	return nil, nil
 }
 
-func (f *followDataAccessor) DeleteFollow(ctx context.Context, account_id uint64, following_id uint64) error {
+func (f followDataAccessor) DeleteFollow(ctx context.Context, account_id uint64, following_id uint64) error {
 	return nil
 }
 
-func (f *followDataAccessor) WithDatabase(database Database) FollowDataAccessor {
-	f.database = database
-	return f
+func (f followDataAccessor) WithDatabase(database Database) FollowDataAccessor {
+	return &followDataAccessor{
+		database: database,
+	}
 }
