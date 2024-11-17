@@ -1,5 +1,2 @@
 .air.toml
-internal/db/*
-internal/env/*
-internal/store/*
-cmd/*
+cmd
