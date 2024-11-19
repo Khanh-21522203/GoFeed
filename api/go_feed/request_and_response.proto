@@ -1,0 +1,146 @@
+syntax = "proto3";
+
+package go_feed;
+option go_package = "api/go_feed;go_feed";
+
+import "api/go_feed/message.proto";
+
+message CreateAccountRequest {
+    string account_name = 1;
+    string password = 2;
+}
+message CreateAccountResponse {
+    string account_id = 1;
+}
+message CreateSessionRequest {
+    string account_name = 1;
+    string password = 2;
+}
+message CreateSessionResponse {
+    string account_id = 1;
+}
+
+
+message CreatePostRequest {
+    string content = 1;
+}
+message CreatePostResponse {
+    uint64 post_id = 1;
+}
+message GetPostByIDRequest {
+    uint64 post_id = 1;
+}
+message GetPostByIDResponse {
+    Post post = 1;
+}
+message GetPostOfAccountRequest {
+    uint64 account_id = 1;
+}
+message GetPostOfAccountResponse {
+    repeated Post post_list = 1;
+}
+message UpdatePostRequest {
+    Post post = 1;
+}
+message UpdatePostResponse {}
+
+
+
+message CreateLikeRequest {
+    uint64 post_id = 1;
+}
+message CreateLikeResponse {
+    uint64 account_id = 1;
+    uint64 post_id = 2;
+}
+message GetLikeCountOfPostRequest {
+    uint64 post_id = 1;
+}
+message GetLikeCountOfPostResponse{
+    uint64 like_count = 1;
+}
+message GetLikeAccountsOfPostRequest{
+    uint64 post_id = 1;
+}
+message GetLikeAccountsOfPostResponse{
+    repeated Account account_list = 1;
+}
+message DeleteLikeRequest{
+    uint64 post_id = 1;
+}
+message DeleteLikeResponse{}
+
+
+
+message CreateCommentRequest{
+    uint64 post_id = 1;
+    string content = 2;
+}
+message CreateCommentResponse{
+    uint64 comment_id = 1;
+}
+message GetCommentCountOfPostRequest{
+    uint64 post_id = 1;
+}
+message GetCommentCountOfPostResponse{
+    uint64 comment_count = 1;
+}
+message GetCommentsOfPostRequest{
+    uint64 post_id = 1;
+}
+message GetCommentsOfPostResponse{
+    repeated Comment comment_list = 1;
+}
+message UpdateCommentRequest{
+    Comment comment = 1;
+}
+message UpdateCommentResponse{
+    uint64 comment_id = 1;
+}
+message DeleteCommentRequest{
+    uint64 comment_id = 1;
+}
+message DeleteCommentResponse{}
+
+
+
+
+message CreateFollowRequest{
+    uint64 following_id = 1;
+}
+message CreateFollowResponse{}
+message GetFollowerCountOfAccountRequest{
+    uint64 account_id = 1;
+}
+message GetFollowerCountOfAccountResponse{
+    uint64 follower_count = 1;
+}
+message GetFollowersOfAccountRequest{
+    uint64 account_id = 1;
+}
+message GetFollowersOfAccountResponse{
+    repeated Account follower_list = 1;
+}
+message GetFollowingCountOfAccountRequest{
+    uint64 account_id = 1;
+}
+message GetFollowingCountOfAccountResponse{
+    uint64 following_count = 1;
+}
+message GetFollowingsOfAccountRequest {
+    uint64 account_id = 1;
+}
+message GetFollowingsOfAccountResponse{
+    repeated Account following_list = 1;
+}
+message DeleteFollowRequest{
+    uint64 following_id = 1;
+}
+message DeleteFollowResponse{}
+
+
+
+message GetNewFeedsRequest {}
+message GetNewFeedsResponse {
+    repeated Post post_list = 1;
+}

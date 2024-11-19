@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package go_feed;
+option go_package = "api/go_feed;go_feed";
+
+import "google/protobuf/timestamp.proto";
+
+message Account {
+    uint64 id = 1;
+    string account_name = 2;
+}
+
+message Post {
+    uint64 id = 1;
+    uint64 account_id = 2;
+    string content = 3;
+}
+
+message Comment {
+    uint64 comment_id = 1;
+    uint64 account_id = 2;
+    uint64 post_id = 3;
+    string content = 4;
+    google.protobuf.Timestamp created_at = 5;
+}
+
+message Follow {
+    uint64 account_id = 1;
+    uint64 following_id = 2;
+}

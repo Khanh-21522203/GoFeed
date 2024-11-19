@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package go_feed;
+option go_package = "api/go_feed;go_feed";
+
+import "api/go_feed/request_and_response.proto";
+
+service GoFeedService{
+
+    rpc CreateAccount(CreateAccountRequest) returns (CreateAccountResponse) {}
+    rpc CreateSession(CreateSessionRequest) returns (CreateSessionResponse) {}
+
+    rpc CreatePost(CreatePostRequest) returns (CreatePostResponse) {}
+    rpc GetPostByID(GetPostByIDRequest) returns (GetPostByIDResponse) {}
+    rpc GetPostOfAccount(GetPostOfAccountRequest) returns (GetPostOfAccountResponse) {}
+    rpc UpdatePost(UpdatePostRequest) returns (UpdatePostResponse) {}
+
+    rpc CreateLike(CreateLikeRequest) returns (CreateLikeResponse) {}
+    rpc GetLikeCountOfPost(GetLikeCountOfPostRequest) returns (GetLikeCountOfPostResponse) {}
+    rpc GetLikeAccountsOfPost(GetLikeAccountsOfPostRequest) returns (GetLikeAccountsOfPostResponse) {}
+    rpc DeleteLike(DeleteLikeRequest) returns (DeleteLikeResponse) {}
+
+    rpc CreateComment(CreateCommentRequest) returns (CreateCommentResponse) {}
+    rpc GetCommentCountOfPost(GetCommentCountOfPostRequest) returns (GetCommentCountOfPostResponse) {}
+    rpc GetCommentsOfPost(GetCommentsOfPostRequest) returns (GetCommentsOfPostResponse) {}
+    rpc UpdateComment(UpdateCommentRequest) returns (UpdateCommentResponse) {}
+    rpc DeleteComment(DeleteCommentRequest) returns (DeleteCommentResponse) {}
+
+    rpc CreateFollow(CreateFollowRequest) returns (CreateFollowResponse) {}
+    rpc GetFollowerCountOfAccount(GetFollowerCountOfAccountRequest) returns (GetFollowerCountOfAccountResponse) {}
+    rpc GetFollowersOfAccount(GetFollowersOfAccountRequest) returns (GetFollowersOfAccountResponse) {}
+    rpc GetFollowingCountOfAccount(GetFollowingCountOfAccountRequest) returns (GetFollowingCountOfAccountResponse) {}
+    rpc GetFollowingsOfAccount(GetFollowingsOfAccountRequest) returns (GetFollowingsOfAccountResponse) {}
+    rpc DeleteFollow(DeleteFollowRequest) returns (DeleteFollowResponse) {}
+
+    rpc GetNewFeeds(GetNewFeedsRequest) returns (GetNewFeedsResponse) {}
+}
+
+
+// protoc -I="." --go_out=internal/generated api/go_feed/message.proto api/go_feed/request_and_response.proto api/go_feed/go_feed.proto
+// protoc -I="." --go-grpc_out=internal/generated api/go_feed/message.proto api/go_feed/request_and_response.proto api/go_feed/go_feed.proto 
