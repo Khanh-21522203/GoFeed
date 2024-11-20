@@ -42,7 +42,7 @@ type accountLogic struct {
 	accountDataAccessor database.AccountDataAccessor
 	hashLogic           HashLogic
 	tokenLogic          TokenLogic
-	idGenerator         snowNode
+	idGenerator         *snowNode
 	logger              *zap.Logger
 }
 
@@ -51,7 +51,7 @@ func NewAccountLogic(
 	accountDataAccessor database.AccountDataAccessor,
 	hashLogic HashLogic,
 	tokenLogic TokenLogic,
-	idGenerator snowNode,
+	idGenerator *snowNode,
 	logger *zap.Logger,
 ) AccountLogic {
 	return &accountLogic{

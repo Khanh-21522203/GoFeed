@@ -32,7 +32,8 @@ type Post struct {
 type PostDataAccessor interface {
 	CreatePost(ctx context.Context, post Post) (uint64, error)
 	GetPostByID(ctx context.Context, id uint64) (Post, error)
-	GetPostsOfAccount(ctx context.Context, account_id uint64) ([]uint64, error)
+	GetPostByIDWithXLock(ctx context.Context, id uint64) (Post, error)
+	GetPostsOfAccount(ctx context.Context, account_id uint64) ([]Post, error)
 	UpdatePost(ctx context.Context, post Post) error
 	DeletePost(ctx context.Context, id uint64) error
 	WithDatabase(database Database) PostDataAccessor
@@ -90,12 +91,33 @@ func (p postDataAccessor) GetPostByID(ctx context.Context, id uint64) (Post, err
 	return post, nil
 }
 
-func (p postDataAccessor) GetPostsOfAccount(ctx context.Context, account_id uint64) ([]uint64, error) {
+func (p postDataAccessor) GetPostByIDWithXLock(ctx context.Context, id uint64) (Post, error) {
 	logger := utils.LoggerWithContext(ctx, p.logger)
 
-	var posts []uint64
+	post := Post{}
+	found, err := p.database.
+		From(TabNamePosts).
+		Where(goqu.C(ColNamePostsID).Eq(id)).
+		ForUpdate(goqu.Wait).
+		ScanStructContext(ctx, &post)
+
+	if err != nil {
+		logger.With(zap.Error(err)).Error("failed to get post by id")
+		return Post{}, status.Error(codes.Internal, "failed to get post by id")
+	}
+	if !found {
+		logger.Warn("cannot find post by id")
+		return Post{}, ErrPostNotFound
+	}
+	return post, nil
+}
+
+func (p postDataAccessor) GetPostsOfAccount(ctx context.Context, account_id uint64) ([]Post, error) {
+	logger := utils.LoggerWithContext(ctx, p.logger)
+
+	var posts []Post
 	err := p.database.
-		Select(ColNamePostsID).
+		// Select(ColNamePostsID).
 		From(TabNamePosts).
 		Where(goqu.C(ColNamePostsAccountID).Eq(account_id)).
 		ScanValsContext(ctx, &posts)
