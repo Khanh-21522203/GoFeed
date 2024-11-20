@@ -21,7 +21,7 @@ const (
 
 type Like struct {
 	AccountID uint64
-	PostID    string
+	PostID    uint64
 }
 
 type LikeDataAccessor interface {

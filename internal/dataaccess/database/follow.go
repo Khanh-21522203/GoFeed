@@ -21,7 +21,7 @@ const (
 
 type Follow struct {
 	AccountID   uint64
-	FollowingID string
+	FollowingID uint64
 }
 
 type FollowDataAccessor interface {

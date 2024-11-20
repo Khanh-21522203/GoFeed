@@ -31,6 +31,7 @@ type Account struct {
 type AccountDataAccessor interface {
 	CreateAccount(ctx context.Context, account Account) (uint64, error)
 	GetAccountByID(ctx context.Context, id uint64) (Account, error)
+	GetAccountByIDs(ctx context.Context, ids []uint64) ([]Account, error)
 	GetAccountByAccountName(ctx context.Context, account_name string) (Account, error)
 	WithDatabase(database Database) AccountDataAccessor
 }
@@ -90,6 +91,43 @@ func (a accountDataAccessor) GetAccountByID(ctx context.Context, id uint64) (Acc
 		return Account{}, ErrAccountNotFound
 	}
 	return account, nil
+}
+
+func (a accountDataAccessor) GetAccountByIDs(ctx context.Context, ids []uint64) ([]Account, error) {
+	logger := utils.LoggerWithContext(ctx, a.logger)
+
+	var accounts []Account
+	if len(ids) == 0 {
+		return accounts, nil
+	}
+	_, err := a.database.
+		From(TabNameAccounts).
+		Select(ColNameAccountsID, ColNameAccountsAccountName).
+		Where(goqu.C(ColNameAccountsID).In(ids)).
+		ScanStructContext(ctx, &accounts)
+	if err != nil {
+		logger.With(zap.Error(err)).Error("failed to get accounts by IDs")
+		return nil, status.Error(codes.Internal, "failed to get accounts by IDs")
+	}
+
+	// if len(accounts) != len(ids) {
+	// 	missingIDs := []uint64{}
+	// 	accountMap := make(map[uint64]struct{})
+	// 	for _, account := range accounts {
+	// 		accountMap[account.ID] = struct{}{}
+	// 	}
+
+	// 	for _, id := range ids {
+	// 		if _, found := accountMap[id]; !found {
+	// 			missingIDs = append(missingIDs, id)
+	// 		}
+	// 	}
+
+	// 	if len(missingIDs) > 0 {
+	// 		logger.Warn("some accounts not found", zap.Uint64s("missingIDs", missingIDs))
+	// 	}
+	// }
+	return accounts, nil
 }
 
 func (a accountDataAccessor) GetAccountByAccountName(ctx context.Context, account_name string) (Account, error) {
