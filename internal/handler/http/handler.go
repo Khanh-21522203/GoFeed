@@ -42,30 +42,30 @@ func (h *handler) registerRoutes(mux *http.ServeMux) {
 
 }
 
-func (h *handler) CreateAccount(w http.ResponseWriter, r *http.Request) {}
-func (h *handler) CreateSession(w http.ResponseWriter, r *http.Request) {}
+func (h handler) CreateAccount(w http.ResponseWriter, r *http.Request) {}
+func (h handler) CreateSession(w http.ResponseWriter, r *http.Request) {}
 
-func (h *handler) CreatePost(w http.ResponseWriter, r *http.Request)       {}
-func (h *handler) GetPostByID(w http.ResponseWriter, r *http.Request)      {}
-func (h *handler) GetPostOfAccount(w http.ResponseWriter, r *http.Request) {}
-func (h *handler) UpdatePost(w http.ResponseWriter, r *http.Request)       {}
+func (h handler) CreatePost(w http.ResponseWriter, r *http.Request)       {}
+func (h handler) GetPostByID(w http.ResponseWriter, r *http.Request)      {}
+func (h handler) GetPostOfAccount(w http.ResponseWriter, r *http.Request) {}
+func (h handler) UpdatePost(w http.ResponseWriter, r *http.Request)       {}
 
-func (h *handler) CreateLike(w http.ResponseWriter, r *http.Request)            {}
-func (h *handler) GetLikeCountOfPost(w http.ResponseWriter, r *http.Request)    {}
-func (h *handler) GetLikeAccountsOfPost(w http.ResponseWriter, r *http.Request) {}
-func (h *handler) DeleteLike(w http.ResponseWriter, r *http.Request)            {}
+func (h handler) CreateLike(w http.ResponseWriter, r *http.Request)            {}
+func (h handler) GetLikeCountOfPost(w http.ResponseWriter, r *http.Request)    {}
+func (h handler) GetLikeAccountsOfPost(w http.ResponseWriter, r *http.Request) {}
+func (h handler) DeleteLike(w http.ResponseWriter, r *http.Request)            {}
 
-func (h *handler) CreateComment(w http.ResponseWriter, r *http.Request)         {}
-func (h *handler) GetCommentCountOfPost(w http.ResponseWriter, r *http.Request) {}
-func (h *handler) GetCommentsOfPost(w http.ResponseWriter, r *http.Request)     {}
-func (h *handler) UpdateComment(w http.ResponseWriter, r *http.Request)         {}
-func (h *handler) DeleteComment(w http.ResponseWriter, r *http.Request)         {}
+func (h handler) CreateComment(w http.ResponseWriter, r *http.Request)         {}
+func (h handler) GetCommentCountOfPost(w http.ResponseWriter, r *http.Request) {}
+func (h handler) GetCommentsOfPost(w http.ResponseWriter, r *http.Request)     {}
+func (h handler) UpdateComment(w http.ResponseWriter, r *http.Request)         {}
+func (h handler) DeleteComment(w http.ResponseWriter, r *http.Request)         {}
 
-func (h *handler) CreateFollow(w http.ResponseWriter, r *http.Request)               {}
-func (h *handler) GetFollowerCountOfAccount(w http.ResponseWriter, r *http.Request)  {}
-func (h *handler) GetFollowersOfAccount(w http.ResponseWriter, r *http.Request)      {}
-func (h *handler) GetFollowingCountOfAccount(w http.ResponseWriter, r *http.Request) {}
-func (h *handler) GetFollowingsOfAccount(w http.ResponseWriter, r *http.Request)     {}
-func (h *handler) DeleteFollow(w http.ResponseWriter, r *http.Request)               {}
+func (h handler) CreateFollow(w http.ResponseWriter, r *http.Request)               {}
+func (h handler) GetFollowerCountOfAccount(w http.ResponseWriter, r *http.Request)  {}
+func (h handler) GetFollowersOfAccount(w http.ResponseWriter, r *http.Request)      {}
+func (h handler) GetFollowingCountOfAccount(w http.ResponseWriter, r *http.Request) {}
+func (h handler) GetFollowingsOfAccount(w http.ResponseWriter, r *http.Request)     {}
+func (h handler) DeleteFollow(w http.ResponseWriter, r *http.Request)               {}
 
-func (h *handler) GetNewFeeds(w http.ResponseWriter, r *http.Request) {}
+func (h handler) GetNewFeeds(w http.ResponseWriter, r *http.Request) {}

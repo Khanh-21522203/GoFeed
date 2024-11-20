@@ -26,7 +26,7 @@ type TokenPublicKey struct {
 
 type TokenPublicKeyDataAccessor interface {
 	CreatePublicKey(ctx context.Context, tokenPublicKey TokenPublicKey) (uint64, error)
-	GetPublicKey(ctx context.Context, id uint64) (string, error)
+	GetPublicKey(ctx context.Context, id uint64) (TokenPublicKey, error)
 	WithDatabase(database Database) TokenPublicKeyDataAccessor
 }
 
@@ -60,19 +60,18 @@ func (t tokenPublicKeyDataAccessor) CreatePublicKey(ctx context.Context, tokenPu
 	return 0, nil
 }
 
-func (t tokenPublicKeyDataAccessor) GetPublicKey(ctx context.Context, id uint64) (string, error) {
+func (t tokenPublicKeyDataAccessor) GetPublicKey(ctx context.Context, id uint64) (TokenPublicKey, error) {
 	logger := utils.LoggerWithContext(ctx, t.logger)
 
-	var token string
+	var token TokenPublicKey
 	err := t.database.
-		Select(ColNameTokenPublicKeysPublicKey).
 		From(TabNameTokenPublicKeys).
 		Where(goqu.C(ColNameTokenPublicKeysID).Eq(id)).
 		ScanValsContext(ctx, &token)
 
 	if err != nil {
 		logger.With(zap.Error(err)).Error("failed to get token public key")
-		return "", status.Error(codes.Internal, "failed to get token public key")
+		return TokenPublicKey{}, status.Error(codes.Internal, "failed to get token public key")
 	}
 	return token, nil
 }
