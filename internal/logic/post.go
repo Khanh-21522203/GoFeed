@@ -56,26 +56,29 @@ type PostLogic interface {
 }
 
 type postLogic struct {
-	goquDatabase     *goqu.Database
-	postDataAccessor database.PostDataAccessor
-	idGenerator      *snowNode
-	tokenLogic       TokenLogic
-	logger           *zap.Logger
+	goquDatabase        *goqu.Database
+	postDataAccessor    database.PostDataAccessor
+	commentDataAccessor database.CommentDataAccessor
+	idGenerator         *snowNode
+	tokenLogic          TokenLogic
+	logger              *zap.Logger
 }
 
 func NewPostLogic(
 	goquDatabase *goqu.Database,
 	postDataAccessor database.PostDataAccessor,
+	commentDataAccessor database.CommentDataAccessor,
 	idGenerator *snowNode,
 	tokenLogic TokenLogic,
 	logger *zap.Logger,
 ) PostLogic {
 	return &postLogic{
-		goquDatabase:     goquDatabase,
-		postDataAccessor: postDataAccessor,
-		idGenerator:      idGenerator,
-		tokenLogic:       tokenLogic,
-		logger:           logger,
+		goquDatabase:        goquDatabase,
+		postDataAccessor:    postDataAccessor,
+		commentDataAccessor: commentDataAccessor,
+		idGenerator:         idGenerator,
+		tokenLogic:          tokenLogic,
+		logger:              logger,
 	}
 }
 
@@ -94,7 +97,7 @@ func (p postLogic) CreatePost(ctx context.Context, params CreatePostParams) (Cre
 	}
 	postID := p.idGenerator.GenID()
 	txErr := p.goquDatabase.WithTx(func(td *goqu.TxDatabase) error {
-		postID, err = p.postDataAccessor.CreatePost(ctx, database.Post{
+		postID, err = p.postDataAccessor.WithDatabase(td).CreatePost(ctx, database.Post{
 			ID:        postID,
 			AccountID: accountID,
 			Content:   params.Content,
@@ -180,6 +183,10 @@ func (p postLogic) DeletePost(ctx context.Context, params DeletePostParams) erro
 		}
 		if account_id != post.AccountID {
 			return status.Error(codes.PermissionDenied, "trying to delete a post the account does not own")
+		}
+		err = p.commentDataAccessor.WithDatabase(td).DeleteCommentOfPost(ctx, params.ID)
+		if err != nil {
+			return err
 		}
 		err = p.postDataAccessor.WithDatabase(td).DeletePost(ctx, params.ID)
 		if err != nil {
