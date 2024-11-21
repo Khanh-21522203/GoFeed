@@ -17,9 +17,9 @@ type Server interface {
 }
 
 type server struct {
-	handler    go_feed.GoFeedServiceServer
-	grpcConfig configs.GRPC
-	logger     *zap.Logger
+	grpcHandler go_feed.GoFeedServiceServer
+	grpcConfig  configs.GRPC
+	logger      *zap.Logger
 }
 
 func NewServer(logger *zap.Logger) Server {
@@ -39,7 +39,7 @@ func (s server) Start(ctx context.Context) error {
 	defer listener.Close()
 
 	server := grpc.NewServer()
-	go_feed.RegisterGoFeedServiceServer(server, s.handler)
+	go_feed.RegisterGoFeedServiceServer(server, s.grpcHandler)
 
 	logger.With(zap.String("address", s.grpcConfig.Address)).Info("starting grpc server")
 	return server.Serve(listener)

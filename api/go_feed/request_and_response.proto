@@ -10,14 +10,14 @@ message CreateAccountRequest {
     string password = 2;
 }
 message CreateAccountResponse {
-    string account_id = 1;
+    uint64 account_id = 1;
 }
 message CreateSessionRequest {
     string account_name = 1;
     string password = 2;
 }
 message CreateSessionResponse {
-    string account_id = 1;
+    uint64 account_id = 1;
 }
 
 
@@ -49,10 +49,7 @@ message UpdatePostResponse {}
 message CreateLikeRequest {
     uint64 post_id = 1;
 }
-message CreateLikeResponse {
-    uint64 account_id = 1;
-    uint64 post_id = 2;
-}
+message CreateLikeResponse {}
 message GetLikeCountOfPostRequest {
     uint64 post_id = 1;
 }
