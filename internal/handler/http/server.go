@@ -33,7 +33,7 @@ func (s server) Start(ctx context.Context) error {
 	mux := http.NewServeMux()
 
 	handler := NewHttpHandler()
-	handler.registerRoutes(mux)
+	handler.RegisterRoutes(mux)
 
 	logger.With(zap.String("address", s.httpConfig.Address)).Info("starting http server")
 	return http.ListenAndServe(s.httpConfig.Address, mux)
