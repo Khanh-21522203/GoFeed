@@ -3,7 +3,7 @@ package configs
 type DatabaseType string
 
 const (
-	DatabaseTypeMySQL DatabaseType = "mysql"
+	DatabaseTypeMySQL DatabaseType = "postgres"
 )
 
 type Database struct {

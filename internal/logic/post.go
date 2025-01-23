@@ -2,6 +2,7 @@ package logic
 
 import (
 	"GoFeed/internal/dataaccess/database"
+	"GoFeed/internal/dataaccess/mq/producer"
 	"GoFeed/internal/generated/api/go_feed"
 	"context"
 
@@ -61,6 +62,7 @@ type postLogic struct {
 	commentDataAccessor database.CommentDataAccessor
 	idGenerator         *snowNode
 	tokenLogic          TokenLogic
+	newFeedJobProducer  producer.NewFeedJobProducer
 	logger              *zap.Logger
 }
 
@@ -106,6 +108,12 @@ func (p postLogic) CreatePost(ctx context.Context, params CreatePostParams) (Cre
 			return err
 		}
 		// Producer to Kafka
+		producerErr := p.newFeedJobProducer.Produce(ctx, producer.NewFeedJob{
+			PostID: postID,
+		})
+		if producerErr != nil {
+			return producerErr
+		}
 		return nil
 	})
 	if txErr != nil {
